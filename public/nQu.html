@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.nQu-q{
+font-size: 400%;
+}
+.nQu-orb{
+stroke: green;
+stroke-width: 5;
+fill: blue;
+}
+.nQu-orb:hover ~ .nQu-orb-subitem {
+display: block;
+}
+.nQu-orb-subitem {
+display:none;
+stroke: green;
+stroke-width: 5;
+fill: blue;
+}
+.nQu-orb-subitem:hover {
+stroke: red;
+}
+</style>
+</head>
+<body>
+
+<!-- TODO: [MARK II] write auto placement algorithm for items on a circle -->
+<!-- TODO: [MARK I] write a deployment scheme(source -> minified, integrated), souce maps-->
+
+<svg style="margin-left: auto;margin-right: auto;" xmlns="http://www.w3.org/2000/svg" version="1.1">
+
+<circle class="nQu-orb" cx="100" cy="100" r="70"/>
+<text class="nQu-q" x="75" y="120">Q</text>
+
+<circle class="nQu-orb-subitem nQu-orb-subitem1" cx="50" cy="50" r="20"/>
+<circle class="nQu-orb-subitem nQu-orb-subitem2" cx="30" cy="100" r="20"/>
+<circle class="nQu-orb-subitem nQu-orb-subitem3" cx="50" cy="150" r="20"/>
+<circle class="nQu-orb-subitem nQu-orb-subitem4" cx="100" cy="170" r="20"/>
+<circle class="nQu-orb-subitem nQu-orb-subitem5" cx="150" cy="150" r="20"/>
+<circle class="nQu-orb-subitem nQu-orb-subitem6" cx="170" cy="100" r="20"/>
+<circle class="nQu-orb-subitem nQu-orb-subitem7" cx="150" cy="50" r="20"/>
+
+
+
+</svg> 
+ 
+</body>
+</html>
