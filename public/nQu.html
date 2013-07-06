@@ -1,22 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-.nQu-q{
-font-size: 400%;
-}
+<style type="text/css">
 .nQu-orb{
 stroke: green;
 stroke-width: 5;
 fill: blue;
-}
-.nQu-orb:hover {
-#does not work - svg circle radius is not a css property
-#this means writing a js animation scheme or using element sizing as a work-around 
-r: 50;
-}
-.nQu-orb:hover ~ .nQu-orb-subitem {
-display: block;
 }
 .nQu-orb-subitem {
 display:none;
@@ -28,12 +17,75 @@ fill: blue;
 stroke: red;
 }
 .nQu-orb-radial {
+display:none;
 stroke: yellow;
 stroke-width: 35;
 fill: none;
 }
+.nQu-orb-radial:hover {
+stroke: red;
+}       
 </style>
-<script>
+<script type="text/javascript">
+
+	//TODO: [MARK II]convert event listeners to observers -> wait for browsers to catch up
+
+	//TODO: convert to support multiple initializers
+	document.addEventListener("DOMContentLoaded", initnQu(orbManager), false);
+
+	/**
+	 *	the system init
+	 *	
+	 *	basic bootstrap & dependency injection
+	 *
+	 *	@contructor
+	 *	@param {constructor} ui -the constructor of the ui object(need to find a more specific name)
+	 */
+	function initnQu(ui) {
+		//TODO: manage dependency injection here
+		this.ui = new orbManager(0);
+	}
+
+	/**
+	 *	the orb manager object
+	 *	
+	 *	manages all interaction that cannot be managed via pure CSS
+	 *
+	 *	@contructor
+	 *	@param {number} state -the state to initialize the orb to
+	 */
+	function orbManager(state) {
+		//TODO: load init paramters from config
+		this.state = typeof state !== 'undefined' ? this.state : 0; // inital
+
+		//register state triggers
+		orb = document.getElementById("nQu-orb");
+		orb.addEventListener("mouseover", this.transistionState(1), false);
+		//TODO: Add treatment of going into submenus
+		orb.addEventListener("mouseout", this.transistionState(0), false);
+
+		/**
+		 *	the transition state method
+		 *	
+		 *	manages all interaction that cannot be managed via pure CSS
+		 *
+		 *	@param {number} toState -the state to switch the orb to(possibly support from->to later)
+		 */
+		this.transitionState(toState)
+		{
+
+			switch (toState) {
+			case 0:
+				orb.setAttribute("r", 20);
+				break;
+			case 1:
+				orb.setAttribute("r", 70);
+				break;
+			}
+
+			this.state = toState;
+		}
+	}
 </script>
 </head>
 <body>
@@ -41,23 +93,21 @@ fill: none;
 <!-- TODO: [MARK II] write auto placement algorithm for items on a circle -->
 <!-- TODO: [MARK I] write a deployment scheme(source -> minified, integrated), souce maps-->
 
-<svg style="margin-left: auto;margin-right: auto;" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
 
-<circle class="nQu-orb" cx="300" cy="300" r="20"/>
-<text class="nQu-q" x="75" y="120">Q</text>
-
-<circle class="nQu-orb-subitem nQu-orb-subitem1" cx="50" cy="50" r="20"/>
-<circle class="nQu-orb-subitem nQu-orb-subitem2" cx="30" cy="100" r="20"/>
-<circle class="nQu-orb-subitem nQu-orb-subitem3" cx="50" cy="150" r="20"/>
-<circle class="nQu-orb-subitem nQu-orb-subitem4" cx="100" cy="170" r="20"/>
-<circle class="nQu-orb-subitem nQu-orb-subitem5" cx="150" cy="150" r="20"/>
-<circle class="nQu-orb-subitem nQu-orb-subitem6" cx="170" cy="100" r="20"/>
-<circle class="nQu-orb-subitem nQu-orb-subitem7" cx="150" cy="50" r="20"/>
-
-<circle class="nQu-orb-radial nQu-orb-radial1" cx="300" cy="300" r="125"/>
-<circle class="nQu-orb-radial nQu-orb-radial2" cx="300" cy="300" r="175"/>
-<circle class="nQu-orb-radial nQu-orb-radial3" cx="300" cy="300" r="225"/>
-
+<g transform="translate(250, 70)">
+<circle id="nQu-orb" class="nQu-orb" r="20"/>
+<circle class="nQu-orb-subitem nQu-orb-subitem1" cx="-50" cy="-50" r="20"/>
+<circle class="nQu-orb-subitem nQu-orb-subitem2" cx="-70" cy="0" r="20"/>
+<circle class="nQu-orb-subitem nQu-orb-subitem3" cx="-50" cy="50" r="20"/>
+<circle class="nQu-orb-subitem nQu-orb-subitem4" cx="0" cy="70" r="20"/>
+<circle class="nQu-orb-subitem nQu-orb-subitem5" cx="50" cy="50" r="20"/>
+<circle class="nQu-orb-subitem nQu-orb-subitem6" cx="70" cy="0" r="20"/>
+<circle class="nQu-orb-subitem nQu-orb-subitem7" cx="50" cy="-50" r="20"/>
+<circle class="nQu-orb-radial nQu-orb-radial1" r="125"/>
+<circle class="nQu-orb-radial nQu-orb-radial2" r="175"/>
+<circle class="nQu-orb-radial nQu-orb-radial3" r="225"/>
+</g>
 
 
 </svg> 
