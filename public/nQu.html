@@ -31,7 +31,7 @@ stroke: red;
 	//TODO: [MARK II]convert event listeners to observers -> wait for browsers to catch up
 
 	//TODO: convert to support multiple initializers
-	document.addEventListener("DOMContentLoaded", initnQu(orbManager), false);
+	document.addEventListener("DOMContentLoaded", function(event) {initnQu(orbManager)}, false);
 
 	/**
 	 *	the system init
@@ -60,9 +60,9 @@ stroke: red;
 
 		//register state triggers
 		orb = document.getElementById("nQu-orb");
-		orb.addEventListener("mouseover", this.transistionState(1), false);
+		orb.addEventListener("mouseover", function(event) {ui.transitionState(1)}, false);
 		//TODO: Add treatment of going into submenus
-		orb.addEventListener("mouseout", this.transistionState(0), false);
+		orb.addEventListener("mouseout", function(event) {ui.transitionState(0)}, false);
 
 		/**
 		 *	the transition state method
@@ -71,7 +71,7 @@ stroke: red;
 		 *
 		 *	@param {number} toState -the state to switch the orb to(possibly support from->to later)
 		 */
-		this.transitionState(toState)
+		this.transitionState = function (toState)
 		{
 
 			switch (toState) {
