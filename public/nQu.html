@@ -1,7 +1,11 @@
 <!DOCTYPE html>
+<!-- TODO: [MARK II] write auto placement algorithm for items on a circle -->
+<!-- TODO: [MARK I] write a deployment scheme(source -> minified, integrated), souce maps-->
 <html>
 <head>
+
 <style type="text/css">
+/*<![CDATA[*/
 .nQu-orb{
 stroke: green;
 stroke-width: 5;
@@ -9,9 +13,16 @@ fill: blue;
 }
 .nQu-orb-subitem {
 display:none;
-stroke: green;
+stroke: white;
 stroke-width: 5;
+fill: white;
+}
+.nQu-orb-subitem-visible {
+display:block;
+stroke: green;
 fill: blue;
+transition-property: stroke, fill;
+transition-delay: 1s;
 }
 .nQu-orb-subitem:hover {
 stroke: red;
@@ -24,14 +35,17 @@ fill: none;
 }
 .nQu-orb-radial:hover {
 stroke: red;
-}       
+} 
+/*]]>*/      
 </style>
+
 <script type="text/javascript">
+/*<![CDATA[*/
 
 	//TODO: [MARK II]convert event listeners to observers -> wait for browsers to catch up
 
 	//TODO: convert to support multiple initializers
-	document.addEventListener("DOMContentLoaded", function(event) {initnQu(orbManager)}, false);
+	document.addEventListener("DOMContentLoaded", function(event) {initnQu(orbManager, dispplayManager)}, false);
 
 	/**
 	 *	the system init
@@ -41,15 +55,30 @@ stroke: red;
 	 *	@contructor
 	 *	@param {constructor} ui -the constructor of the ui object(need to find a more specific name)
 	 */
-	function initnQu(ui) {
-		//TODO: manage dependency injection here
+	function initnQu(ui,display) {
+		//TODO: manage dependency injection here, iterate over params and bootstrap all injected dependencies
 		this.ui = new orbManager(0);
+	 	this.display = new displayManager(model);
+	 
+		/**
+		 *	the connnect method
+		 *	
+		 *	connect the signals(DOM events) to slots(methods of injected objects) 
+		 *
+		 *	@param signal - the DOM event to trigger the action //TODO: see if it's somehow possible to pass an actual reference to the dom here, as it would provide the context as part of the object, likely a translation willl be required here
+		 *
+		 *	@param slot - the reference to the method to call 
+		 */
+	 	this.connect = function (signal, slot) {
+	 		
+	 	}
 	}
 
 	/**
 	 *	the orb manager object
 	 *	
 	 *	manages all interaction that cannot be managed via pure CSS
+	 *	currently it is implemented as Finite State Machine
 	 *
 	 *	@contructor
 	 *	@param {number} state -the state to initialize the orb to
@@ -58,12 +87,15 @@ stroke: red;
 		//TODO: load init paramters from config
 		this.state = typeof state !== 'undefined' ? this.state : 0; // inital
 
+		//TODO: define signals and slots here instead and move registration to the connect method of the main app class
+		
 		//register state triggers
 		orb = document.getElementById("nQu-orb");
 		orb.addEventListener("mouseover", function(event) {ui.transitionState(1)}, false);
 		//TODO: Add treatment of going into submenus
 		orb.addEventListener("mouseout", function(event) {ui.transitionState(0)}, false);
 
+		//TODO: think about making states item specific(object bound FSMs)
 		/**
 		 *	the transition state method
 		 *	
@@ -74,29 +106,109 @@ stroke: red;
 		this.transitionState = function (toState)
 		{
 
+		 	//TODO: factor out common code into private function
 			switch (toState) {
 			case 0:
+				//TODO: animate sizing
 				orb.setAttribute("r", 20);
+				//TODO: investigate caching
+				subItems = document.querySelectorAll(".nQu-orb-subitem");
+				//too bad this isn't supported yet
+				//for (let subItem of subItems) {
+				for (i = 0; i < subItems.length; ++i) {
+					subItems[i].classList.remove("nQu-orb-subitem-visible");
+				};
 				break;
 			case 1:
+				//TODO: animate sizing
 				orb.setAttribute("r", 70);
+				//TODO: investigate caching
+				subItems = document.querySelectorAll(".nQu-orb-subitem");
+				//too bad this isn't supported yet
+				//for (let subItem of subItems) {
+				for (i = 0; i < subItems.length; ++i) {
+					subItems[i].classList.add("nQu-orb-subitem-visible");
+				};
 				break;
 			}
 
 			this.state = toState;
 		}
 	}
+		
+	// this should be loaded via the model abstraction layer(e.g. backbone)
+	model = {
+		currentItem: 1, //this should become a hash or url -> use case: user opens a web page, e.g. via awesomebar -> system should be able to load nQu and initialize itself in the current playlist position of that item
+		playlists: {
+			{
+				name: "Playlist One",
+				items: {
+					{
+						name: "Item1",
+						url: "http://www.heise.de"
+					},
+					{
+						name: "Item2",
+						url: "http://www.chip.de"
+					}
+				}
+			}
+		}
+	}
+		 
+	/**
+	 *	the display manager object
+	 *	
+	 *	manages display of items
+	 *	currently it is implemented as Finite State Machine
+	 *
+	 *	@contructor
+	 *	@param {object} mdel - the playlist model
+	 */
+	function displayManager(model) {
+		//TODO: load init paramters from config
+		this.preload = 2 //number of preloaded items
+		
+		
+		//register state triggers
+
+		//create initial layout box
+		
+		//decide on whether to handle playlist plugins here(e.g. ordering playlist plugins influence "position")
+	 	//which in turn would go for the fat controller route of the MVC design pattern
+	 	//or handle them semantically within the model layer(fat models)
+			
+		//position is relative to the current playlist;is array of x,y 
+		//if position has moved, update cache
+		
+		this.cacheItems = function (position) {
+			
+			// use preload variable to fill chaches
+			// don't forget to change the position of the item of the next/previous playlists
+			
+			//create place holders for non existing items & playlists
+			
+			//handle wrapping
+		}
+	 
+	 	
+	 
+		
+	}
+/*]]>*/
 </script>
 </head>
 <body>
 
-<!-- TODO: [MARK II] write auto placement algorithm for items on a circle -->
-<!-- TODO: [MARK I] write a deployment scheme(source -> minified, integrated), souce maps-->
+<!-- TODO: check if there is a way to nest groups, in order to apply the css menu/submenu pattern to our svg menu -->
+<!-- TODO: find the optimal way for positioning the svg -->
+<!-- TODO: deal with viewport (different interpretation of defaults across browsers) -->
 
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
 
 <g transform="translate(250, 70)">
 <circle id="nQu-orb" class="nQu-orb" r="20"/>
+
 <circle class="nQu-orb-subitem nQu-orb-subitem1" cx="-50" cy="-50" r="20"/>
 <circle class="nQu-orb-subitem nQu-orb-subitem2" cx="-70" cy="0" r="20"/>
 <circle class="nQu-orb-subitem nQu-orb-subitem3" cx="-50" cy="50" r="20"/>
@@ -104,6 +216,8 @@ stroke: red;
 <circle class="nQu-orb-subitem nQu-orb-subitem5" cx="50" cy="50" r="20"/>
 <circle class="nQu-orb-subitem nQu-orb-subitem6" cx="70" cy="0" r="20"/>
 <circle class="nQu-orb-subitem nQu-orb-subitem7" cx="50" cy="-50" r="20"/>
+
+<!-- TODO: split radi into arcs for simpler object event notifications -->
 <circle class="nQu-orb-radial nQu-orb-radial1" r="125"/>
 <circle class="nQu-orb-radial nQu-orb-radial2" r="175"/>
 <circle class="nQu-orb-radial nQu-orb-radial3" r="225"/>
