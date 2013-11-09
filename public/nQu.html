@@ -45,7 +45,7 @@ stroke: red;
 	//TODO: [MARK II]convert event listeners to observers -> wait for browsers to catch up
 
 	//TODO: convert to support multiple initializers
-	document.addEventListener("DOMContentLoaded", function(event) {initnQu(orbManager, dispplayManager)}, false);
+	document.addEventListener("DOMContentLoaded", function(event) {initnQu(orbManager, displayManager)}, false);
 
 	/**
 	 *	the system init
@@ -136,26 +136,26 @@ stroke: red;
 		}
 	}
 		
+
 	// this should be loaded via the model abstraction layer(e.g. backbone)
 	model = {
 		currentItem: 1, //this should become a hash or url -> use case: user opens a web page, e.g. via awesomebar -> system should be able to load nQu and initialize itself in the current playlist position of that item
-		playlists: {
-			{
+		playlists: {1:{
 				name: "Playlist One",
 				items: {
-					{
+					1:{
 						name: "Item1",
 						url: "http://www.heise.de"
 					},
-					{
+					2: {
 						name: "Item2",
 						url: "http://www.chip.de"
 					}
-				}
-			}
-		}
+					}
+		}}
 	}
-		 
+	
+
 	/**
 	 *	the display manager object
 	 *	
