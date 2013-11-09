@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- TODO: [immedeate] find out why subitem hover does not work -->
 <!-- TODO: [MARK II] write auto placement algorithm for items on a circle -->
 <!-- TODO: [MARK I] write a deployment scheme(source -> minified, integrated), souce maps-->
 <html>
@@ -89,11 +90,16 @@ stroke: red;
 
 		//TODO: define signals and slots here instead and move registration to the connect method of the main app class
 		
-		//register state triggers
+		//cache variables
+		//TODO: investigate caching manager
+		orbParent = document.getElementById("nQu-orb-parent");
 		orb = document.getElementById("nQu-orb");
-		orb.addEventListener("mouseover", function(event) {ui.transitionState(1)}, false);
+		subItems = document.querySelectorAll(".nQu-orb-subitem");
+		
+		//register state triggers
+		orbParent.addEventListener("mouseover", function(event) {ui.transitionState(1)}, false);
 		//TODO: Add treatment of going into submenus
-		orb.addEventListener("mouseout", function(event) {ui.transitionState(0)}, false);
+		orbParent.addEventListener("mouseout", function(event) {ui.transitionState(0)}, false);
 
 		//TODO: think about making states item specific(object bound FSMs)
 		/**
@@ -111,8 +117,6 @@ stroke: red;
 			case 0:
 				//TODO: animate sizing
 				orb.setAttribute("r", 20);
-				//TODO: investigate caching
-				subItems = document.querySelectorAll(".nQu-orb-subitem");
 				//too bad this isn't supported yet
 				//for (let subItem of subItems) {
 				for (i = 0; i < subItems.length; ++i) {
@@ -122,8 +126,6 @@ stroke: red;
 			case 1:
 				//TODO: animate sizing
 				orb.setAttribute("r", 70);
-				//TODO: investigate caching
-				subItems = document.querySelectorAll(".nQu-orb-subitem");
 				//too bad this isn't supported yet
 				//for (let subItem of subItems) {
 				for (i = 0; i < subItems.length; ++i) {
@@ -206,9 +208,9 @@ stroke: red;
 
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
 
-<g transform="translate(250, 70)">
+<g id="nQu-orb-parent" transform="translate(250, 70)">
 <circle id="nQu-orb" class="nQu-orb" r="20"/>
-
+<g>
 <circle class="nQu-orb-subitem nQu-orb-subitem1" cx="-50" cy="-50" r="20"/>
 <circle class="nQu-orb-subitem nQu-orb-subitem2" cx="-70" cy="0" r="20"/>
 <circle class="nQu-orb-subitem nQu-orb-subitem3" cx="-50" cy="50" r="20"/>
@@ -216,8 +218,8 @@ stroke: red;
 <circle class="nQu-orb-subitem nQu-orb-subitem5" cx="50" cy="50" r="20"/>
 <circle class="nQu-orb-subitem nQu-orb-subitem6" cx="70" cy="0" r="20"/>
 <circle class="nQu-orb-subitem nQu-orb-subitem7" cx="50" cy="-50" r="20"/>
-
-<!-- TODO: split radi into arcs for simpler object event notifications -->
+</g>
+<!-- TODO: split radii into arc pieces for simpler object event notifications -->
 <circle class="nQu-orb-radial nQu-orb-radial1" r="125"/>
 <circle class="nQu-orb-radial nQu-orb-radial2" r="175"/>
 <circle class="nQu-orb-radial nQu-orb-radial3" r="225"/>
