@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<!-- activating the parser for HTML5 (and not for html 4 or sth. else) -->
+
 <!-- TODO: [immedeate] find out why subitem hover does not work -->
 <!-- TODO: [MARK II] write auto placement algorithm for items on a circle -->
 <!-- TODO: [MARK I] write a deployment scheme(source -> minified, integrated), souce maps-->
@@ -7,38 +9,72 @@
 
 <style type="text/css">
 /*<![CDATA[*/
+/*cdata-tag means that everything that follows is_NO_ XML/HTML-markup*/
+
+
+/*little orb*/
 .nQu-orb{
 stroke: green;
 stroke-width: 5;
 fill: blue;
 }
+
+
+/*the small circles that appear while hovering - and are invisible before that (display: none) */
 .nQu-orb-subitem {
 display:none;
 stroke: white;
 stroke-width: 5;
 fill: white;
 }
+
+
+/*the small circles that appear while hovering*/
 .nQu-orb-subitem-visible {
 display:block;
 stroke: green;
 fill: blue;
 transition-property: stroke, fill;
-transition-delay: 1s;
+//transition-delay: 1s;
 }
+
+
+/*the edges of the small circles that appear when hovering over them*/
 .nQu-orb-subitem:hover {
 stroke: red;
 }
+
+
+/*the big circles outside the orb; they are should be invisible*/ 
 .nQu-orb-radial {
 display:none;
 stroke: yellow;
 stroke-width: 35;
 fill: none;
 }
+
+
+/*their colour when hovering over them - when they are visible*/
 .nQu-orb-radial:hover {
 stroke: red;
 } 
+
+
+.nQu-orb-arc {
+display:block;
+stroke: blue;
+stroke-width: 35;
+fill: none;
+}
+
+
+.nQu-orb-arc:hover {
+stroke: red;
+} 
+
 /*]]>*/      
 </style>
+
 
 <script type="text/javascript">
 /*<![CDATA[*/
@@ -88,10 +124,11 @@ stroke: red;
 		//TODO: load init paramters from config
 		this.state = typeof state !== 'undefined' ? this.state : 0; // inital
 
-		//TODO: define signals and slots here instead and move registration to the connect method of the main app class
-		
+		//TODO: define signals and slots here instead and move registration to the connect method of the main app class		
 		//cache variables
 		//TODO: investigate caching manager
+
+
 		orbParent = document.getElementById("nQu-orb-parent");
 		orb = document.getElementById("nQu-orb");
 		subItems = document.querySelectorAll(".nQu-orb-subitem");
@@ -111,6 +148,18 @@ stroke: red;
 		 */
 		this.transitionState = function (toState)
 		{
+
+			//this resembles a state machine
+			//quo vadis: should we even define a fixed number of states (for the orb)?
+			//drawback: if we include new states later on (or have to modify existing states)
+            //then we need to rewrite lots of code    
+                         
+			//do framworks exist that manage that kind of stuff?
+ 
+			//(Backbone we are gonna use only for the collection management, with an interface to the Orb 
+			//(Backbone we are gonna expand by a multi-layer-sync; primary db is at the user (browser),
+            // we push this info onto the server(optional)
+
 
 		 	//TODO: factor out common code into private function
 			switch (toState) {
@@ -197,6 +246,9 @@ stroke: red;
 	 
 		
 	}
+
+
+
 /*]]>*/
 </script>
 </head>
@@ -204,13 +256,16 @@ stroke: red;
 
 <!-- TODO: check if there is a way to nest groups, in order to apply the css menu/submenu pattern to our svg menu -->
 <!-- TODO: find the optimal way for positioning the svg -->
-<!-- TODO: deal with viewport (different interpretation of defaults across browsers) -->
+<!-- TODO: deal with viewport!! (different interpretation of defaults across browsers) -->
 
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="500" height="500">
+<!-- svg namespace -> svg parsing; setting the svg-viewport size -->
 
-<g id="nQu-orb-parent" transform="translate(250, 70)">
+<g id="nQu-orb-parent" transform="translate(250, 250) ">
+<!-- positioning the central orb with "translate"  --> 
+     
 <circle id="nQu-orb" class="nQu-orb" r="20"/>
-<g>
+<g> 
 <circle class="nQu-orb-subitem nQu-orb-subitem1" cx="-50" cy="-50" r="20"/>
 <circle class="nQu-orb-subitem nQu-orb-subitem2" cx="-70" cy="0" r="20"/>
 <circle class="nQu-orb-subitem nQu-orb-subitem3" cx="-50" cy="50" r="20"/>
@@ -219,12 +274,32 @@ stroke: red;
 <circle class="nQu-orb-subitem nQu-orb-subitem6" cx="70" cy="0" r="20"/>
 <circle class="nQu-orb-subitem nQu-orb-subitem7" cx="50" cy="-50" r="20"/>
 </g>
+
+
 <!-- TODO: split radii into arc pieces for simpler object event notifications -->
+<g transform="rotate(22.5 0 0)">
+<path class="nQu-orb-arc nQu-orb-arc1" d="M 0 -169.71 A 169.71 169.71 0 0 1 120 -120" />
+<path class="nQu-orb-arc nQu-orb-arc2" d="M 120 -120  A 169.71 169.71 0 0 1 169.71 0"/>
+
+<path class="nQu-orb-arc nQu-orb-arc3" d="M 169.71 0 A 169.71 169.71 0 0 1 120 120" />
+<path class="nQu-orb-arc nQu-orb-arc4" d="M 120 120 A 169.71 169.71 0 0 1 0 169.71" />
+
+<path class="nQu-orb-arc nQu-orb-arc5" d="M 0 169.71 A 169.71 169.71 0 0 1 -120 120" />
+<path class="nQu-orb-arc nQu-orb-arc6" d="M -120 120 A 169.71 169.71 0 0 1 -169.71 0" />
+
+<path class="nQu-orb-arc nQu-orb-arc7" d="M -169.71 0 A 169.71 169.71 0 0 1 -120 -120" />
+<path class="nQu-orb-arc nQu-orb-arc8" d="M -120 -120 A 169.71 169.71 0 0 1 0 -169.71 " />
+
+<!-- NB: the path is nested into a group  -->
+<!--
 <circle class="nQu-orb-radial nQu-orb-radial1" r="125"/>
 <circle class="nQu-orb-radial nQu-orb-radial2" r="175"/>
 <circle class="nQu-orb-radial nQu-orb-radial3" r="225"/>
+-->
 </g>
 
+
+</g>
 
 </svg> 
  
