@@ -218,7 +218,9 @@ stroke: red;
 	 */
 	function displayManager(model) {
 		//TODO: load init paramters from config
-		this.preload = 2 //number of preloaded items
+		//implicit/untrapped assumption: 1 = smallest preload
+		this.cachePL = 1 //number of preloaded playlists
+		this.cacheI = 1 //number of preloaded items
 		
 		
 		//register state triggers
@@ -233,7 +235,50 @@ stroke: red;
 		//if position has moved, update cache
 		
 		this.cacheItems = function (position) {
+			/*
+		
+			viewPortX = window.innerHeight;
+			viewPortY = window.innerWidth;
 			
+			//the smallest size should be 3x3 -> scolling is possible in any direction
+			scrollboxItemsX = (this.cachePL * 2) + 1;
+			scrollboxItemsY = (this.cacheI * 2) + 1;
+		
+						
+			//some code will be needed for dealing with Qs shorter than preload -> later
+			//Also: code is needed in for the displamanager for dealing with unequal Qs in different PLs
+
+			if (model.playlists.length < scrollboxItemsX) {
+				if 	
+			}
+
+			
+			//TODO: call setup from constructor
+			//TODO: move setup to own method
+			
+			//TODO: register hooks that re-size the scrollbox & items upon viewport re-size
+			scrollbox = document.createElement("div");
+			
+			//TODO: investigate most optimal sequencing of adding and sizing
+			//set css dimensions to scrollboxItemsX * viewPortX, scrollboxItemsY * viewPortY
+			
+			for (i=0; i<= x; i++) {
+				playlist = document.createElement("div");
+				playlist.id = "nQu_playlist" + i;
+				
+				for (i2=0; i2<=y; i2++){
+					item = document.createElement("span");
+					item.id = "nQu_item_" + i + "_" + i2;
+					
+					playlist.appendChild(item);
+					
+					//set css dimensions to viewPortX, viewPortY
+				}
+				
+				scrollbox.appendChild(playlist);
+			}
+			
+			*/
 			// use preload variable to fill chaches
 			// don't forget to change the position of the item of the next/previous playlists
 			
